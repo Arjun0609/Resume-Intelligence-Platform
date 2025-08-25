@@ -25,7 +25,8 @@ export default function BatchAnalysis() {
   const [filters, setFilters] = useState({
     search: '',
     category: 'all',
-    riskLevel: 'all'
+    riskLevel: 'all',
+    whiteFonting: 'all'
   });
 
   useEffect(() => {
@@ -81,15 +82,23 @@ export default function BatchAnalysis() {
     }
 
     if (filters.category !== 'all') {
-      filtered = filtered.filter(result => 
-        result.category.toLowerCase() === filters.category.toLowerCase()
-      );
+      filtered = filtered.filter(result => {
+        return result.classification_results.predicted_category.toLowerCase() === filters.category.toLowerCase();
+      });
     }
 
     if (filters.riskLevel !== 'all') {
       filtered = filtered.filter(result => {
-        const riskInfo = getTurnoverRisk(result.turnover_probability);
+        if (!result.turnover_results) return false;
+        const riskInfo = getTurnoverRisk(result.turnover_results.prediction.leave_probability);
         return riskInfo.level.toLowerCase() === filters.riskLevel.toLowerCase();
+      });
+    }
+
+    if (filters.whiteFonting !== 'all') {
+      filtered = filtered.filter(result => {
+        const isClean = !result.whitefonting_results;
+        return (filters.whiteFonting === 'clean' && isClean) || (filters.whiteFonting === 'dirty' && !isClean);
       });
     }
 
@@ -215,7 +224,7 @@ export default function BatchAnalysis() {
             <CardDescription className="text-gray-600">Refine your analysis view with advanced filters</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
               <div className="space-y-2">
                 <label className="text-sm font-medium text-gray-700">Search Resume</label>
                 <Input 
@@ -225,6 +234,7 @@ export default function BatchAnalysis() {
                   onChange={(e) => handleFilterChange('search', e.target.value)}
                 />
               </div>
+              <div className="space-y-2"></div>
               <div className="space-y-2">
                 <label className="text-sm font-medium text-gray-700">Category</label>
                 <Select value={filters.category} onValueChange={(value) => handleFilterChange('category', value)}>
@@ -256,11 +266,18 @@ export default function BatchAnalysis() {
                   </SelectContent>
                 </Select>
               </div>
-              <div className="flex items-end">
-                <Button className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 font-medium">
-                  <Filter className="h-4 w-4 mr-2" />
-                  Apply Filters
-                </Button>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700">WhiteFonting</label>
+                <Select value={filters.whiteFonting} onValueChange={(value) => handleFilterChange('whiteFonting', value)}>
+                  <SelectTrigger className="border-gray-300 focus:border-blue-500">
+                    <SelectValue placeholder="All WhiteFonting" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All WhiteFonting</SelectItem>
+                    <SelectItem value="clean">Clean</SelectItem>
+                    <SelectItem value="dirty">Manipulated</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
           </CardContent>

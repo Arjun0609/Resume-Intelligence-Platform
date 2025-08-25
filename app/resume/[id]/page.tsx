@@ -258,9 +258,6 @@ export default function ResumeDetail({ params }: { params: { id: string } }) {
                   .sort(([, probabilityA], [, probabilityB]) => probabilityB - probabilityA)
                   .map(([name, probability]) => {
                     if (probability > 0) {
-                      if (probability < 0.4 && probability >= 0.2) {
-                        probability += 0.4
-                      }
                       return (
                         <div key={name}>
                           <div className="flex justify-between items-center mb-2">

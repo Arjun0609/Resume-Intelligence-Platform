@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
-import { FileText, Users, TrendingUp, BarChart3, Shield, Brain, Target, ArrowRight, Zap, Activity } from "lucide-react"
+import { FileText, Users, TrendingUp, BarChart3, Shield, Brain, Target, ArrowRight, Zap, Activity, UsersIcon } from "lucide-react"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import { getMetrics, getHistory, getTurnoverRisk, formatConfidence, handleApiError, MetricsResponse, HistoryResponse } from "@/lib/api"
@@ -126,6 +126,15 @@ export default function Dashboard() {
                 <Link href="/analyze">
                   <Zap className="h-4 w-4 mr-2" />
                   Analyze Resume
+                </Link>
+              </Button>
+              <Button
+                className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 shadow-lg"
+                asChild
+              >
+                <Link href="/about">
+                  <UsersIcon className="h-4 w-4 mr-2" />
+                  About Us
                 </Link>
               </Button>
             </div>

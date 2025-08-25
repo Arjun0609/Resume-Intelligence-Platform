@@ -8,7 +8,9 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "Resume Analysis System - AI-Powered Resume Intelligence",
   description: "Comprehensive resume analysis with white text detection, classification, and turnover prediction",
-    generator: 'v0.dev'
+  icons: {
+    icon: '/logo.png',
+  },
 }
 
 export default function RootLayout({
