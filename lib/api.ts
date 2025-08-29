@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:8500';
+const API_BASE_URL = 'https://ai-based-resume-screening.onrender.com/';
 
 export interface ResumeAnalysis {
   id: string;
